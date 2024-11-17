@@ -20,7 +20,7 @@ const Nav = () => {
         <div className="web-name">
           <img
             className="logo"
-            src={process.env.PUBLIC_URL + "NoteNest-logo.png"}
+            src="https://storage.googleapis.com/note-nest-data/images/NoteNest-logo.png"
             alt="logo"
           />
           <div className="nav-name">NoteNest</div>
