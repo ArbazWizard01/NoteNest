@@ -1,0 +1,68 @@
+*{
+    overflow-x: hidden;
+}
+nav{
+    position: absolute ;
+    background-color: beige;
+    height: 50px;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.nav-name{
+    font-size: 24px;
+    font-weight: 600;
+    color:darkcyan;
+}
+
+.web-name{
+    display: flex;
+    padding-left: 50px;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+
+.nav-icons{
+    display: flex;
+    gap: 35px;
+    padding-right: 50px;
+    
+}
+
+.icon{
+    font-size: 24px;
+    cursor: pointer;
+    transition: 300ms ease-in-out;
+}
+.icon:hover{
+    font-size: 25px;
+    color: darkcyan;
+}
+
+.logo{
+    inline-size: 40px;
+}
+
+/* Form slide */
+
+.note-form-container {
+    position: absolute;
+    /* top: -100%; */
+    left: 25%;
+    width: 100%;
+    background-color: #f4f4f4;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    transform: translateY(-100%); 
+    z-index: 10; /* Ensure it appears above other elements */
+  }
+  
+  .note-form-container.form-slide {
+    transform: translateY(60%);
+    /* top: 50%; */
+  }
