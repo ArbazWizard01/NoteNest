@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/NoteNest/static/css/main.7bbc1b46.css",
+    "main.js": "/NoteNest/static/js/main.0801d1c5.js",
+    "static/js/453.419a5d54.chunk.js": "/NoteNest/static/js/453.419a5d54.chunk.js",
+    "index.html": "/NoteNest/index.html",
+    "main.7bbc1b46.css.map": "/NoteNest/static/css/main.7bbc1b46.css.map",
+    "main.0801d1c5.js.map": "/NoteNest/static/js/main.0801d1c5.js.map",
+    "453.419a5d54.chunk.js.map": "/NoteNest/static/js/453.419a5d54.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7bbc1b46.css",
+    "static/js/main.0801d1c5.js"
+  ]
+}
