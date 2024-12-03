@@ -1,7 +1,109 @@
-.note-container{
-    padding-top: 100px;
+.container {
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  transform: translate(-15%, -10%);
+  /* filter: blur(1px); */
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.note-container {
+  /* background-image: url(../../../public/note-background-img.webp); */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Prevent stretching */
+  gap: 20px;
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+  padding: 15px;
+  height: 60vh;
+  width: 950px;
+  flex-wrap: wrap;
+  border: darkcyan 3px solid;
+  border-radius: 15px;
+  /* background-color: cyan; */
+  overflow-y: auto; /* Add scroll for overflowing content */
 }
 
-.note{
-    background-color: beige;
+.note {
+  color: darkslategray;
+  position: relative;
+  min-height: 100px; /* Let the height adjust based on content */
+  width: 200px;
+  background-color: #e0ffff; /* Light Cyan */
+  border: 2px solid darkcyan;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+  word-wrap: break-word; /* Ensures long words break */
+  overflow-wrap: break-word; /* Modern alternative */
+  white-space: normal; /* Ensures text wraps onto the next line */
+}
+
+.note:hover {
+  background-color: #b2dfe6; /* Slightly darker cyan for hover */
+}
+
+.note-buttons {
+  position: absolute;
+  display: flex;
+  gap: 10px;
+  top: 5px;
+  right: 18px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.edit-button {
+  cursor: pointer;
+  transition: 300ms ease-in-out;
+}
+
+.edit-button:hover {
+  color: darkgreen;
+}
+
+.delete-button {
+  cursor: pointer;
+  transition: 300ms ease-in-out;
+}
+
+.delete-button:hover {
+  color: #89373e;
+}
+
+.note-edit-buttons {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  bottom: 5px;
+  right: 18px;
+}
+
+.cancel-edit {
+  cursor: pointer;
+  font-size: 20px;
+  transition: 300ms ease-in-out;
+}
+.cancel-edit:hover {
+  color: #89373e;
+}
+
+.save-edit {
+  cursor: pointer;
+  font-weight: 600;
+  transition: 300ms ease-in-out;
+}
+
+.save-edit:hover {
+  color: darkgreen;
 }

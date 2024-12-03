@@ -1,24 +1,74 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
+import axios from "axios";
 
 export const NoteContext = createContext();
 
 export const NoteProvider = ({ children }) => {
   const [notes, setNotes] = useState([]);
 
+  const getNotes = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/");
+      console.log("API Response:", response.data);
+      if (response.status === 200 && Array.isArray(response.data)) {
+        setNotes(response.data);
+      } else if (response.data.notes) {
+        setNotes(response.data.notes || []);
+      } else {
+        console.error("Unexpected API response format");
+        setNotes([]);
+      }
+    } catch (err) {
+      console.error("Error getting notes:", err);
+      setNotes([]);
+    }
+  };
 
   const addNote = (note) => {
-    setNotes((prevNotes) => [...prevNotes, {...note, id: Date.now()}]);
+    setNotes((prevNotes = []) => [...prevNotes, note]);
   };
 
-  const deleteNote = (index) => {
-    setNotes((prevNotes) => prevNotes.filter((item) => item.id !== index));
+  const deleteNote = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:8000/${id}`);
+      console.log("Delete Response:", response.data); // Add this line to check the response from the server
+      if (response.status === 200) {
+        setNotes((prevNotes) => prevNotes.filter((note) => note._id !== id));
+        alert("Note is Deleted Successfully");
+      }
+    } catch (err) {
+      console.error("Error Deleting Note: ", err);
+      alert("Failed to delete note, try again later!");
+    }
   };
+
+  const updateNote = async (id, updatedNote) => {
+    try {
+      const response = await axios.put(`http://localhost:8000/${id}`, updatedNote);
+      if (response.status === 200) {
+        setNotes((prevNotes) =>
+          prevNotes.map((note) =>
+            note._id === id ? { ...note, ...updatedNote } : note
+          )
+        );
+        alert("Note updated successfully");
+      }
+    } catch (err) {
+      console.error("Error updating note:", err);
+      alert("Failed to update note! Try again later!");
+    }
+  };
+  
+
+  useEffect(() => {
+    getNotes();
+  }, []);
 
   return (
-    <NoteContext.Provider value={{ notes, addNote, deleteNote }}>
+    <NoteContext.Provider value={{ notes, addNote, deleteNote, updateNote }}>
       {children}
     </NoteContext.Provider>
   );
 };
 
-export default NoteContext
+export default NoteContext;

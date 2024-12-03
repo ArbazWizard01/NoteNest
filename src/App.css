@@ -3,6 +3,13 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
-  /* background-color: beige; */
   /* text-align: center; */
+}
+
+body{
+  background-color: #E8F8F5;
+  background-image: url(../public/note-background-img.webp);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
