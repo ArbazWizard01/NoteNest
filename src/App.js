@@ -1,12 +1,27 @@
+import {React, useContext} from 'react';
 import './App.css';
-import Nav from './components/nav/Nav';
+import NoteForm from './components/noteForm/NoteForm';
 import Note from './components/note/Note';
+import NoteContext from './NoteContext';
+import { MdAddBox } from "react-icons/md";
 
 function App() {
+  const {isSlideOn, slideOn} = useContext(NoteContext)
   return (
     <div className="App">
-      <Nav />
+      <div className="web-name">
+          <img
+            className="logo"
+            src={process.env.PUBLIC_URL + "/NoteNest-logo.png"}
+            alt="logo"
+          />
+          <div className="nav-name">NoteNest</div>
+      </div>
+      <div className={`note-form-container ${isSlideOn ? "form-slide" : ""}`}>
+          <NoteForm />
+      </div>
       <Note />
+      <MdAddBox className="add-note" onClick={slideOn} />
     </div>
   );
 }

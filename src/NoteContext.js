@@ -1,10 +1,11 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useCallback } from "react";
 import axios from "axios";
 
 export const NoteContext = createContext();
 
 export const NoteProvider = ({ children }) => {
   const [notes, setNotes] = useState([]);
+  const [isSlideOn, setIsSlideOn] = useState(false);
 
   const getNotes = async () => {
     try {
@@ -59,13 +60,16 @@ export const NoteProvider = ({ children }) => {
     }
   };
   
+  const slideOn = useCallback(() => {
+    setIsSlideOn((bool) => !bool);
+  }, []);
 
   useEffect(() => {
     getNotes();
   }, []);
 
   return (
-    <NoteContext.Provider value={{ notes, addNote, deleteNote, updateNote }}>
+    <NoteContext.Provider value={{ notes, addNote, deleteNote, updateNote, slideOn, isSlideOn }}>
       {children}
     </NoteContext.Provider>
   );
