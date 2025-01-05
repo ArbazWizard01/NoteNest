@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useCallback } from "react";
-import axios from "axios";
+import { apiClient } from "./apiClient";
 
 export const NoteContext = createContext();
 
@@ -9,7 +9,7 @@ export const NoteProvider = ({ children }) => {
 
   const getNotes = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/");
+      const response = await apiClient.get("/");
       console.log("API Response:", response.data);
       if (response.status === 200 && Array.isArray(response.data)) {
         setNotes(response.data);
@@ -31,7 +31,7 @@ export const NoteProvider = ({ children }) => {
 
   const deleteNote = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8000/${id}`);
+      const response = await apiClient.delete(`/${id}`);
       console.log("Delete Response:", response.data); // Add this line to check the response from the server
       if (response.status === 200) {
         setNotes((prevNotes) => prevNotes.filter((note) => note._id !== id));
@@ -45,7 +45,7 @@ export const NoteProvider = ({ children }) => {
 
   const updateNote = async (id, updatedNote) => {
     try {
-      const response = await axios.put(`http://localhost:8000/${id}`, updatedNote);
+      const response = await apiClient.put(`/${id}`, updatedNote);
       if (response.status === 200) {
         setNotes((prevNotes) =>
           prevNotes.map((note) =>

@@ -1,10 +1,10 @@
 import React from "react";
 import { useState, useContext } from "react";
-import axios from "axios";
 import "./form.css";
 import NoteContext from "../../NoteContext";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 import { IoMdArrowBack } from "react-icons/io";
+import { apiClient } from "../../apiClient";
 
 // import TextArea from "antd/es/input/TextArea";
 
@@ -21,7 +21,7 @@ const NoteForm = () => {
     }
     const newNote = { title, content, createdAt: new Date() };
     try {
-      const response = await axios.post("http://localhost:8000/", newNote);
+      const response = await apiClient.post("/", newNote);
       if (response.status === 200) {
         addNote(response.data.note);
         setTitle("");
@@ -39,9 +39,13 @@ const NoteForm = () => {
     <>
       <form onSubmit={handleSubmit}>
         <div className="form-btns">
-          <Button variant="contained" onClick={slideOn}>cancel</Button>
+          <Button variant="contained" onClick={slideOn}>
+            cancel
+          </Button>
           {/* <IoMdArrowBack className="form-cancel" onClick={slideOn} /> */}
-          <Button variant="contained" onClick={handleSubmit}>Save</Button>
+          <Button variant="contained" onClick={handleSubmit}>
+            Save
+          </Button>
         </div>
         <input
           type="Text"
