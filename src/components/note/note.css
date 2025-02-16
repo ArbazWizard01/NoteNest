@@ -33,6 +33,8 @@
   overflow-wrap: break-word;
   white-space: normal;
   overflow: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
 }
 
 

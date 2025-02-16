@@ -6,6 +6,41 @@ export const NoteContext = createContext();
 export const NoteProvider = ({ children }) => {
   const [notes, setNotes] = useState([]);
   const [isSlideOn, setIsSlideOn] = useState(false);
+  const [editingNote, setEditingNote] = useState(null);
+  const [popAlert, setPopAlert] = useState(false);
+  const [popUpdated, setPopUpdated] = useState(false);
+  const [popDeleted, setPopDeleted] = useState(false);
+  const [noTitle, setNoTitle] = useState(false)
+
+  const slideOn = useCallback(() => {
+    console.log("Slide On Called");
+    setIsSlideOn((bool) => !bool);
+  }, []);
+
+  const addedAlert = useCallback(() => {
+    setPopAlert((bool) => !bool);
+  }, []);
+  const updatedAlert = useCallback(() => {
+    setPopUpdated((bool) => !bool);
+  }, []);
+  const deletedAlert = useCallback(() => {
+    
+    setPopDeleted((bool) => !bool);
+  }, []);
+  const noTitleAlert = useCallback(() => {
+    
+    setNoTitle((bool) => !bool);
+  }, []);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setPopAlert(false);
+    setPopUpdated(false);
+    setPopDeleted(false);
+    setNoTitle(false);
+  };
 
   const getNotes = async () => {
     try {
@@ -25,6 +60,10 @@ export const NoteProvider = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    getNotes();
+  }, []);
+
   const addNote = (note) => {
     setNotes((prevNotes = []) => [...prevNotes, note]);
   };
@@ -35,7 +74,7 @@ export const NoteProvider = ({ children }) => {
       console.log("Delete Response:", response.data); // Add this line to check the response from the server
       if (response.status === 200) {
         setNotes((prevNotes) => prevNotes.filter((note) => note._id !== id));
-        alert("Note is Deleted Successfully");
+        deletedAlert();
       }
     } catch (err) {
       console.error("Error Deleting Note: ", err);
@@ -52,24 +91,34 @@ export const NoteProvider = ({ children }) => {
             note._id === id ? { ...note, ...updatedNote } : note
           )
         );
-        alert("Note updated successfully");
+        updatedAlert();
       }
     } catch (err) {
       console.error("Error updating note:", err);
       alert("Failed to update note! Try again later!");
     }
   };
-  
-  const slideOn = useCallback(() => {
-    setIsSlideOn((bool) => !bool);
-  }, []);
-
-  useEffect(() => {
-    getNotes();
-  }, []);
 
   return (
-    <NoteContext.Provider value={{ notes, addNote, deleteNote, updateNote, slideOn, isSlideOn }}>
+    <NoteContext.Provider
+      value={{
+        notes,
+        addNote,
+        deleteNote,
+        updateNote,
+        slideOn,
+        isSlideOn,
+        editingNote,
+        setEditingNote,
+        addedAlert,
+        popAlert,
+        handleClose,
+        popUpdated,
+        popDeleted,
+        noTitle,
+        noTitleAlert
+      }}
+    >
       {children}
     </NoteContext.Provider>
   );

@@ -1,36 +1,90 @@
-import React from "react";
-import { useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./form.css";
 import NoteContext from "../../NoteContext";
 import Button from "@mui/material/Button";
-import { IoMdArrowBack } from "react-icons/io";
 import { apiClient } from "../../apiClient";
-
-// import TextArea from "antd/es/input/TextArea";
+// import { useDebounce } from "../../hooks/useDebounce"; // Import debounce hook
 
 const NoteForm = () => {
-  const { addNote, slideOn } = useContext(NoteContext);
+  const {
+    addNote,
+    slideOn,
+    updateNote,
+    editingNote,
+    setEditingNote,
+    addedAlert,
+    noTitleAlert,
+  } = useContext(NoteContext);
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  // const [aiSuggestion, setAiSuggestion] = useState(""); 
+  // const debouncedContent = useDebounce(content, 1000);
+
+  useEffect(() => {
+    if (editingNote) {
+      setTitle(editingNote.title);
+      setContent(editingNote.content);
+    } else {
+      setTitle("");
+      setContent("");
+    }
+  }, [editingNote]);
+
+  // Fetch AI suggestion when debouncedContent changes
+  // useEffect(() => {
+  //   if (debouncedContent.trim()) {
+  //     fetchAiSuggestion(debouncedContent);
+  //   } else {
+  //     setAiSuggestion("");
+  //   }
+  // }, [debouncedContent]);
+
+  // const fetchAiSuggestion = async (text) => {
+  //   try {
+  //     const response = await apiClient.post("/", {
+  //       userInput: text,
+  //     });
+
+  //     if (response.status === 200) {
+  //       setAiSuggestion(response.data.response); // Update suggestion
+  //     }
+  //   } catch (err) {
+  //     console.error("Error fetching AI prediction:", err);
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!title.trim()) {
-      alert("Title is required to add note!");
-      return;
-    }
-    const newNote = { title, content, createdAt: new Date() };
-    try {
-      const response = await apiClient.post("/", newNote);
-      if (response.status === 200) {
-        addNote(response.data.note);
-        setTitle("");
-        setContent("");
-        alert("Note Added SuccessFully");
+    if (editingNote) {
+      const updatedNote = {
+        title: title,
+        content: content,
+        updatedAt: new Date(),
+      };
+      updateNote(editingNote._id, updatedNote);
+      setTitle("");
+      setContent("");
+      setEditingNote(null);
+    } else {
+      if (!title.trim()) {
+        noTitleAlert();
+        slideOn();
+        return;
       }
-    } catch (err) {
-      console.error("Error adding Note", err);
-      alert("Failed to add note, Try again later");
+      const newNote = { title, content, createdAt: new Date() };
+      try {
+        const response = await apiClient.post("/", newNote);
+        if (response.status === 200) {
+          addNote(response.data.note);
+          setTitle("");
+          setContent("");
+          addedAlert();
+        }
+      } catch (err) {
+        console.error("Error adding Note", err);
+        alert("Failed to add note, Try again later");
+      }
     }
     slideOn();
   };
@@ -39,16 +93,23 @@ const NoteForm = () => {
     <>
       <form onSubmit={handleSubmit}>
         <div className="form-btns">
-          <Button variant="contained" onClick={slideOn}>
-            cancel
+          <Button
+            style={{ backgroundColor: "gray" }}
+            variant="contained"
+            onClick={() => {
+              slideOn();
+              setEditingNote(null);
+            }}
+          >
+            Cancel
           </Button>
-          {/* <IoMdArrowBack className="form-cancel" onClick={slideOn} /> */}
+
           <Button variant="contained" onClick={handleSubmit}>
-            Save
+            {editingNote ? "Update Note" : "Add Note"}
           </Button>
         </div>
         <input
-          type="Text"
+          type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Title"
@@ -59,6 +120,12 @@ const NoteForm = () => {
           onChange={(e) => setContent(e.target.value)}
           placeholder="Write Your Note here..."
         />
+        
+        {/* {aiSuggestion && (
+          <div className="ai-suggestion">
+            <strong>Suggestion:</strong> {aiSuggestion}
+          </div>
+        )} */}
       </form>
     </>
   );

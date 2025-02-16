@@ -15,12 +15,12 @@ form {
 
 .form-btns {
   display: flex;
-  justify-content: space-between;
+  justify-content:flex-end;
+  gap: 40px;
   align-items: center;
 }
 .form-cancel {
-  font-size: 24px;
-  cursor: pointer;
+  color: coral;
 }
 .form-save {
   cursor: pointer;
