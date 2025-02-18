@@ -13,6 +13,7 @@
   scroll-behavior: smooth;
   flex-wrap: wrap;
   border-radius: 15px;
+  margin-bottom: 20px;
 
   /* overflow-y: auto; */
 }
@@ -110,4 +111,14 @@
 }
 
 
-
+@media (max-width: 600px) {
+  .note{
+    width: 120px;
+  }
+  .title{
+    font-size: 21px;
+  }
+  .content{
+    font-size: 14px;
+  }
+}
